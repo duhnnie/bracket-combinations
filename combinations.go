@@ -12,24 +12,6 @@ var stringResults = [][]string{
 	{"()()", "(())"},
 }
 
-func insertNumberAtIndex(slice []uint64, number uint64, index int) []uint64 {
-	sliceLength := len(slice)
-	sliceCapacity := cap(slice)
-	requiredLength := int(math.Max(float64(sliceLength + 1), float64(index + 1)))
-
-	if requiredLength > sliceCapacity {
-		var newSlice = make([]uint64, requiredLength, requiredLength * 3/2)
-		copy(newSlice, slice)
-		slice = newSlice
-	}
-
-	slice = slice[0:requiredLength]
-	copy(slice[index + 1:], slice[index:])
-	slice[index] = number
-
-	return slice
-}
-
 func insertAtIndex[T any](slice []T, value T, index int) []T {
 	sliceLength := len(slice)
 	sliceCapacity := cap(slice)
@@ -75,7 +57,7 @@ func GetCombinationsCount(number int) uint64 {
 		sum += (GetCombinationsCount(number - i) * GetCombinationsCount(i - 1))
 	}
 
-	results = insertNumberAtIndex(results, sum, number)
+	results = insertAtIndex(results, sum, number)
 
 	return sum
 }
